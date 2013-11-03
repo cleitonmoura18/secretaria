@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/WEB-INF/jsp/decorators">
+    <decorator name="principal" page="paroquia.jsp">
+        <pattern>/paroquias/*</pattern>
+    </decorator>
+    <decorator name="encontro" page="encontro.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+   
+</decorators>

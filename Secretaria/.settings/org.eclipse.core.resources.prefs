@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+encoding//src/main/java=cp1252
+encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/decorators/paroquia.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/encontro/form.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/paroquia/form.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/paroquia/index.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/paroquia/listEncontros.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/paroquia/newParoquia.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/pessoa/form.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/pessoa/newPessoa.jsp=UTF-8
+encoding//src/test/java=cp1252
+encoding//src/test/resources=UTF-8
+encoding/<project>=UTF-8
+separateDerivedEncodings=true
