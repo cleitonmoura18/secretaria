@@ -67,7 +67,8 @@ public class PapelNaEquipeController {
 	public void update(PapelNaEquipe papelNaEquipe) {
 		validator.validate(papelNaEquipe);
 		validator.onErrorUsePageOf(this).edit(papelNaEquipe);
-		papelNaEquipe.setEncontro(new Encontro(session.getIdEncontro()));
+		Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
+		papelNaEquipe.setEncontro(encontro);
 		repository.update(papelNaEquipe);
 		result.redirectTo(this).index();
 	}

@@ -2,21 +2,21 @@ package br.com.cleiton.repositorio;
 
 import java.util.List;
 
-import br.com.cleiton.modelo.Partipacao;
+import br.com.cleiton.modelo.Participacao;
 
 public interface PartipacaoRepository {
 	/*
 	 * Delete the methods you don't want to expose
 	 */
 	 
-	void create(Partipacao entity);
+	void create(Participacao entity);
 	
-	Partipacao update(Partipacao entity);
+	Participacao update(Participacao entity);
 	
-	void destroy(Partipacao entity);
+	void destroy(Participacao entity);
 	
-	Partipacao find(Long id);
+	Participacao find(Long id);
 	
-	List<Partipacao> findAll();
+	List<Participacao> findAll();
 
 }

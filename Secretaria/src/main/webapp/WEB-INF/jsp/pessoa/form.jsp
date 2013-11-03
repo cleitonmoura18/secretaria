@@ -1,9 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <body style="cursor: auto;">
-<c:if test="${not empty errors}">
-	<c:forEach items="${errors}" var="error">
-		${error.category} - ${error.message}<br />
-	</c:forEach>
-</c:if>
 <div class="well">
 <form action="${pageContext.request.contextPath}/pessoas" method="POST" class="form-horizontal" role="form">
 		<c:if test="${not empty pessoa.id}">
@@ -36,7 +33,7 @@
 				</c:choose>
         	</label>
         	<div class="col-sm-10">
-        		<input type="text" name="pessoa.nome" id="nome" class="form-control" vvalue="${pessoa.nome}" required="required" >
+        		<input type="text" name="pessoa.nome" id="nome" class="form-control" value="${pessoa.nome}" required="required" >
         	</div>
         </div>
         <c:if test="${pessoa.tipoPessoa.descricao=='Casal'}">

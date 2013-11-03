@@ -114,4 +114,5 @@ public class EquipeController {
 		repository.destroy(repository.find(equipe.getId()));
 		result.redirectTo(this).index();
 	}
+	
 }

@@ -1,8 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <div id="mostrarResposta" hidden="" class="alert "></div>
 <div class="panel panel-primary">
 		<div class="panel-heading " align="center">
 			<h3 class="panel-title text-center" style="position: relative">Ordenar Equipes
-			<button id="salvarOrdenacao" type="button" class="btn btn-success" style="position: absolute; right: -8px; top: -8px">Salvar Ordenação</button>
+			<button id="salvarOrdenacao" type="button" class="btn btn-success" style="position: absolute; right: -8px; top: -8px">Salvar OrdenaÃ§Ã£o</button>
 			</h3>
 		</div>
 		<div class="row grid span8">
@@ -14,7 +16,7 @@
 </div>
 	
 <script type="text/javascript">//<![CDATA[ 
-//Função para ordenar as equipes
+//FunÃ§Ã£o para ordenar as equipes
 $(function () {
     $(".grid").sortable({
         tolerance: 'pointer',
@@ -36,7 +38,7 @@ $(function () {
 	$(function() {
 		$("#salvarOrdenacao").click(function() {
 			var idsInOrder = $(".grid").sortable("toArray");
-			//chamar aqui método post
+			//chamar aqui mÃ©todo post
 			$.post("${pageContext.request.contextPath}/equipes/salvar/ordem", {
 				ids : idsInOrder.toString()
 			}).done(function(data) {

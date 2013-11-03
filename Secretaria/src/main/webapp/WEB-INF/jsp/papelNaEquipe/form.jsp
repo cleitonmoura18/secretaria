@@ -1,8 +1,3 @@
-<c:if test="${not empty errors}">
-	<c:forEach items="${errors}" var="error">
-		${error.category} - ${error.message}<br />
-	</c:forEach>
-</c:if>
 
 <form action="${pageContext.request.contextPath}/papelNaEquipes" method="post">
   

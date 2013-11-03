@@ -7,7 +7,7 @@ import org.junit.Test;
 public class PartipacaoTest {
 
     @Test public void fakeTest() {
-  		assertNotNull("put something real.", new Partipacao());
+  		assertNotNull("put something real.", new Participacao());
   	}
 }
 

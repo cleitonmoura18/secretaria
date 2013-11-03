@@ -1,5 +1,6 @@
 package br.com.cleiton.controlador;
 
+import java.io.IOException;
 import java.util.List;
 
 import br.com.cleiton.components.UsuarioSession;
@@ -7,6 +8,7 @@ import br.com.cleiton.modelo.Encontro;
 import br.com.cleiton.modelo.Paroquia;
 import br.com.cleiton.repositorio.EncontroRepository;
 import br.com.cleiton.repositorio.ParoquiaRepository;
+import br.com.cleiton.word.ArquivoWord;
 import br.com.caelum.vraptor.Delete;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
@@ -32,6 +34,16 @@ public class EncontroController {
 		this.paroquiaRepository=paroquiaRepository;
 		this.validator = validator;
 		this.session=session;
+	}
+	@Get("criarQuadrante")
+	public void criarQuadrante(){
+		ArquivoWord arquivoWord= new ArquivoWord();
+		try {
+			arquivoWord.criarQuadrante(repository.find(4l));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Get("/encontros")

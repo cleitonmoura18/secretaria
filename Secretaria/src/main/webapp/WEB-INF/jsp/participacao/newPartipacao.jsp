@@ -1,5 +1,5 @@
 <head>
-	<title>Partipacao [edit]</title>
+	<title>participacao [new]</title>
 </head>
 <body>
 	<%@include file="form.jsp"%>
