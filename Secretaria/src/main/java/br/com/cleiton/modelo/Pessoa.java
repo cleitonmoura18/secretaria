@@ -1,11 +1,15 @@
 package br.com.cleiton.modelo;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.CollectionOfElements;
 @javax.persistence.Entity
 public class Pessoa extends Entity {
 
@@ -17,6 +21,8 @@ public class Pessoa extends Entity {
 	private String nomeConjugue;
 	@Enumerated(EnumType.STRING)
 	private TipoPessoa tipoPessoa;
+	@CollectionOfElements(fetch=FetchType.LAZY)
+	private List<String> telefones;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Paroquia paroquia;
@@ -85,5 +91,14 @@ public class Pessoa extends Entity {
 	public void setNomeConjugue(String nomeConjugue) {
 		this.nomeConjugue = nomeConjugue;
 	}
-
+	public String getFonesTemplate() {
+		StringBuilder builder= new StringBuilder();
+		for (Iterator<String> iterator = telefones.iterator(); iterator.hasNext();) {
+			String telefone = (String) iterator.next();
+			builder.append(telefone);
+			if(iterator.hasNext())
+				builder.append("/");
+		}
+		return builder.toString();
+	}
 }
