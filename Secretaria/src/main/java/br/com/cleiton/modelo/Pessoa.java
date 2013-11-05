@@ -16,9 +16,9 @@ public class Pessoa extends Entity {
 
 	private String nome;
 	private Date dataNascimento;
-	private String email;
-	private String endereco;
-	private String bairro;
+	private String email="";
+	private String endereco="";
+	private String bairro="";
 	private String nomeConjugue;
 	@Enumerated(EnumType.STRING)
 	private TipoPessoa tipoPessoa;

@@ -22,6 +22,7 @@ import br.com.cleiton.modelo.Equipe;
 import br.com.cleiton.modelo.PapelNaEquipe;
 import br.com.cleiton.modelo.Participacao;
 import br.com.cleiton.modelo.Pessoa;
+import br.com.cleiton.modelo.TipoPessoa;
 
 /**
  * Hello world!
@@ -30,7 +31,6 @@ import br.com.cleiton.modelo.Pessoa;
 public class ArquivoWord {
 	private XWPFDocument document;
 	private String fonte = "Times New Roman";
-
 
 	public void criarQuadrante(Encontro encontro) throws IOException {
 		carregarArquivo("C:/Users/Cleiton/EJC/Quadrante/src/arquivos/QuadranteTemplate.docx");
@@ -42,11 +42,11 @@ public class ArquivoWord {
 		Collections.sort(encontro.getEquipes());
 		Collections.sort(encontro.getPapeisNaEquipe());
 		List<PapelNaEquipe> papeisNaEquipe = encontro.getPapeisNaEquipe();
-		int quantidadeEquipes=encontro.getEquipes().size();
+		int quantidadeEquipes = encontro.getEquipes().size();
 		for (int i = 0; i < encontro.getEquipes().size(); i++) {
 			criarEquipe(encontro.getEquipes().get(i), papeisNaEquipe);
-			if(quantidadeEquipes-1!=i)
-			inserirQuebraDePagina();
+			if (quantidadeEquipes - 1 != i)
+				inserirQuebraDePagina();
 		}
 	}
 
@@ -60,31 +60,34 @@ public class ArquivoWord {
 				criarPapelServos(papelNaEquipe.getNome());
 				for (Participacao participacao : partipacao) {
 					Pessoa pessoa = participacao.getPessoa();
-					criarJovem(pessoa);
+					criarParticipante(pessoa);
 				}
 			}
 
 		}
 	}
 
-	/**
-	 * Cria um paragrafo com todas as informações de um jovem
-	 */
-	public void criarJovem(Pessoa primo) {
+	
+	public void criarParticipante(Pessoa pessoa) {
 
 		XWPFParagraph paragrafo = document.createParagraph();
 
 		paragrafo.setSpacingAfter(0);
-		formatarNome(paragrafo, primo.getNome());
-		formatarPadraoOutrosDadosServo(paragrafo,
-				"Endereço: " + primo.getEndereco());
-		formatarPadraoOutrosDadosServo(paragrafo,
-				"Bairro: " + primo.getBairro());
-		formatarPadraoOutrosDadosServo(paragrafo,
-				"Fones: " + primo.getFonesTemplate());
-		formatarPadraoOutrosDadosServo(paragrafo, "E-mail: " + primo.getEmail());
-		formatarPadraoOutrosDadosServo(paragrafo, primo.getTipoPessoa()
-				.getData() + ": " + new SimpleDateFormat("dd/MM/yyyy").format(primo.getDataNascimento()));
+		if(pessoa.getTipoPessoa().equals(TipoPessoa.CASAL)){
+			formatarNome(paragrafo, pessoa.getNome()+" e "+pessoa.getNomeConjugue());
+		}else{
+		formatarNome(paragrafo, pessoa.getNome());
+		}
+		formatarPadraoOutrosDadosServo(paragrafo, "Endereço: " + pessoa.getEndereco());
+		formatarPadraoOutrosDadosServo(paragrafo, "Bairro: " + pessoa.getBairro());
+		formatarPadraoOutrosDadosServo(paragrafo,"Fones: " + pessoa.getFonesTemplate());
+		formatarPadraoOutrosDadosServo(paragrafo, "E-mail: " + pessoa.getEmail());
+		String dataFormatada = "";
+		if (pessoa.getDataNascimento() != null)
+			dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(pessoa
+					.getDataNascimento());
+		formatarPadraoOutrosDadosServo(paragrafo, pessoa.getTipoPessoa()
+				.getData() + ": " + dataFormatada);
 	}
 
 	public void carregarArquivo(String path) throws IOException {

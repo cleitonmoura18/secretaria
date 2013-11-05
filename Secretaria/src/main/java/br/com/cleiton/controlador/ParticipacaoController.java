@@ -53,7 +53,6 @@ public class ParticipacaoController {
 		validator.onErrorUsePageOf(this).newPartipacao(participacao.getEquipe().getId());
 		participacao.getPessoa().setParoquia(new Paroquia(session.getIdParoquia()));
 		pessoaRepository.create(participacao.getPessoa());
-		
 		repository.create(participacao);
 		result.redirectTo(this).index();
 	}
