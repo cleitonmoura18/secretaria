@@ -1,5 +1,6 @@
 package br.com.cleiton.controlador;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,12 +13,16 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.interceptor.download.Download;
 import br.com.caelum.vraptor.validator.ValidationMessage;
 import br.com.caelum.vraptor.view.Results;
 import br.com.cleiton.components.Mensagem;
 import br.com.cleiton.components.UsuarioSession;
+import br.com.cleiton.components.Utils;
 import br.com.cleiton.modelo.Encontro;
 import br.com.cleiton.modelo.Equipe;
+import br.com.cleiton.modelo.Participacao;
+import br.com.cleiton.modelo.TipoPessoa;
 import br.com.cleiton.repositorio.EncontroRepository;
 import br.com.cleiton.repositorio.EquipeRepository;
 
@@ -45,7 +50,9 @@ public class EquipeController {
 	@Get("/equipes")
 	public Encontro index() {
 
-		return encontroRepositorio.find(session.getIdEncontro());
+		Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
+		Collections.sort(encontro.getEquipes());
+		return encontro;
 	}
 
 	@Post("/equipes")
@@ -56,7 +63,7 @@ public class EquipeController {
 		equipe.setEncontro(encontro);
 		equipe.setOrdemImpressao(encontro.getEquipes().size());
 		repository.create(equipe);
-		result.redirectTo(this).index();
+		result.redirectTo(EncontroController.class).show(encontro);
 	}
 
 	@Get("/equipes/ordenar")
@@ -71,17 +78,20 @@ public class EquipeController {
 		Collections.sort(encontro.getEquipes());
 		return encontro;
 	}
-	
+
 	@Post("/equipes/salvar/ordem")
 	public void salvarOrdenacao(String ids) {
-		List<String> idsArray = new ArrayList<String>(Arrays.asList(ids.split(",")));
+		List<String> idsArray = new ArrayList<String>(Arrays.asList(ids
+				.split(",")));
 		Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
 		List<Equipe> equipes = encontro.getEquipes();
 
 		for (Equipe equipe : equipes) {
-			equipe.setOrdemImpressao(idsArray.indexOf(equipe.getId().toString()));
+			equipe.setOrdemImpressao(idsArray
+					.indexOf(equipe.getId().toString()));
 		}
-		result.use(Results.json()).from(new Mensagem("Ordenação Salva com Sucesso")).serialize();
+		result.use(Results.json())
+				.from(new Mensagem("Ordenação Salva com Sucesso")).serialize();
 	}
 
 	@Get("/equipes/new")
@@ -93,9 +103,10 @@ public class EquipeController {
 	public void update(Equipe equipe) {
 		validator.validate(equipe);
 		validator.onErrorUsePageOf(this).edit(equipe);
-		equipe.setEncontro(encontroRepositorio.find(session.getIdEncontro()));
+		Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
+		equipe.setEncontro(encontro);
 		repository.update(equipe);
-		result.redirectTo(this).index();
+		result.redirectTo(EncontroController.class).show(encontro);
 	}
 
 	@Get("/equipes/{equipe.id}/edit")
@@ -106,13 +117,48 @@ public class EquipeController {
 
 	@Get("/equipes/{equipe.id}")
 	public Equipe show(Equipe equipe) {
-		return repository.find(equipe.getId());
+
+		Equipe equipeView = repository.find(equipe.getId());
+		equipeView.getPartipacao();
+		result.include("participacaoList", equipeView.getPartipacao());
+		return equipeView;
 	}
 
 	@Delete("/equipes/{equipe.id}")
 	public void destroy(Equipe equipe) {
 		repository.destroy(repository.find(equipe.getId()));
-		result.redirectTo(this).index();
+		Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
+		result.redirectTo(EncontroController.class).show(encontro);
 	}
-	
+
+	@Get({"/cracha/{idEquipe}","/crachas"})
+	public Download nomeCracha(Long idEquipe) throws IOException {
+		List<String> nomeCracahas = new ArrayList<String>();
+		nomeCracahas.add("Nome;Equipe");
+		String nomearquivo= "Crachás ";
+		if (idEquipe != null) {
+			Equipe equipe = repository.find(idEquipe);
+			inserirEquipe(nomeCracahas, equipe);
+			nomearquivo+=equipe.getName();
+		}else{
+			Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
+			for (Equipe equipe : encontro.getEquipes()) {
+				inserirEquipe(nomeCracahas, equipe);
+			}
+			nomearquivo+= "Todos participantes";
+		}
+		return Utils.createXLSX(nomeCracahas, nomearquivo);
+	}
+
+	private void inserirEquipe(List<String> nomeCracahas, Equipe equipe) {
+		for (Participacao participacao : equipe.getPartipacao()) {
+			if(participacao.getPessoa().getTipoPessoa().equals(TipoPessoa.CASAL)){
+				nomeCracahas.add("Tio " +participacao.getPessoa().getNomeCracha()+" e "+participacao.getPessoa().getNomeCrachaConjugue()+" "+Utils.DELIMITADOR+" "+equipe.getName());
+				nomeCracahas.add("Tia "+ participacao.getPessoa().getNomeCrachaConjugue()+" e "+participacao.getPessoa().getNomeCracha()+" "+Utils.DELIMITADOR+" "+equipe.getName());
+			}else{
+				nomeCracahas.add(participacao.getPessoa().getNomeCracha()+" "+Utils.DELIMITADOR+" "+equipe.getName());
+			}
+		}
+	}
+
 }

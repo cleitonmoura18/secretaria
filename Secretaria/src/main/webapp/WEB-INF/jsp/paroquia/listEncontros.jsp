@@ -3,7 +3,9 @@
 <title>Lista de Encontros da Paróquia: ${paroquia.name}</title>
 </head>
 <body>
-		
+		<div class="page-header" align="center">
+		<h1>Paroquia: ${paroquia.name}</h1>
+	</div>
 	<div class="panel panel-primary">
 
 		<div class="panel-heading " align="center">

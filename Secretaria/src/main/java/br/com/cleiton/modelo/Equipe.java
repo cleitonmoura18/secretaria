@@ -17,6 +17,8 @@ public class Equipe extends Entity implements Comparable<Equipe> {
 	private Encontro encontro;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="equipe")
 	private List<Participacao> partipacao;
+	
+	private boolean precisaPapelNaEquipe;
 
 	public void setName(String name) {
 		this.name = name;
@@ -67,4 +69,20 @@ public class Equipe extends Entity implements Comparable<Equipe> {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Equipe [name=" + name + ", ordemImpressao=" + ordemImpressao
+				+ ", encontro=" + encontro + ", partipacao=" + partipacao + "]";
+	}
+
+	public boolean isPrecisaPapelNaEquipe() {
+		return precisaPapelNaEquipe;
+	}
+
+	public void setPrecisaPapelNaEquipe(boolean precisaPapelNaEquipe) {
+		this.precisaPapelNaEquipe = precisaPapelNaEquipe;
+	}
+
+	
+	
 }

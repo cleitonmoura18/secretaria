@@ -10,6 +10,7 @@
 		Nome:<br />
 	
 		<input type="text" name="papelNaEquipe.nome" value="${papelNaEquipe.nome}"/>
+		<input type="hidden" name="papelNaEquipe.ordemImpressao" value="${papelNaEquipe.ordemImpressao}"/>
 	</div>
 	
   <div class="actions">

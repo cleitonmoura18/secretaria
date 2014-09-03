@@ -1,6 +1,7 @@
 package br.com.cleiton.controlador;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.cleiton.components.UsuarioSession;
@@ -35,11 +36,11 @@ public class EncontroController {
 		this.validator = validator;
 		this.session=session;
 	}
-	@Get("criarQuadrante")
-	public void criarQuadrante(){
+	@Get("criarQuadrante/{idQuadrante}")
+	public  void criarQuadrante(Long idQuadrante){
 		ArquivoWord arquivoWord= new ArquivoWord();
 		try {
-			arquivoWord.criarQuadrante(repository.find(4l));
+			arquivoWord.criarQuadrante(repository.find(idQuadrante));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,7 +75,7 @@ public class EncontroController {
 		validator.onErrorUsePageOf(this).edit(encontro);
 		encontro.setParoquia(paroquiaRepository.find(session.getIdParoquia()));
 		repository.update(encontro);
-		result.redirectTo(this).index();
+		result.redirectTo(ParoquiaController.class).listEncontros(session.getIdParoquia());
 	}
 	
 	@Get("/encontros/{encontro.id}/edit")
@@ -85,7 +86,10 @@ public class EncontroController {
 	@Get("/encontros/{encontro.id}")
 	public Encontro show(Encontro encontro) {
 		session.setIdEncontro(encontro.getId());
-		return repository.find(encontro.getId());
+		Encontro encontroView = repository.find(encontro.getId());
+		Collections.sort(encontroView.getPapeisNaEquipe());
+		Collections.sort(encontroView.getEquipes());
+		return encontroView;
 	}
 
 	@Delete("/encontros/{encontro.id}")
@@ -93,5 +97,7 @@ public class EncontroController {
 		repository.destroy(repository.find(encontro.getId()));
 		result.redirectTo(this).index();  
 	}
-
+public static void main(String[] args) {
+	
+}
 }

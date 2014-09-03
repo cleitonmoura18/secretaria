@@ -15,28 +15,26 @@
 
 		<table class="table   table-responsive table-bordered" align="center">
 			<tr>
-				<th>Nome</th>
-				<th>Editar</th>
-				<th>Excluir</th>
+				<th width="70%">Nome</th>
+				<th width="15%">Editar</th>
+				<th width="15%">Excluir</th>
 			</tr>
 
 			<c:forEach items="${paroquiaList}" var="paroquia">
 				<tr>
-					<td><h4><a
-						href="${pageContext.request.contextPath}/paroquias/${paroquia.id}/listaEncontros">
-							${paroquia.name} </a></h4></td>
-					<td><a
-						href="${pageContext.request.contextPath}/paroquias/${paroquia.id}/edit"
-						class="btn btn-primary "><span
-							class="glyphicon glyphicon-pencil" /></a></td>
+					<td class="anchor">
+						<a href="${pageContext.request.contextPath}/paroquias/${paroquia.id}/listaEncontros">${paroquia.name}</a>
+					</td>
 					<td>
-						<form
-							action="${pageContext.request.contextPath}/paroquias/${paroquia.id}"
-							method="post">
+						<a href="${pageContext.request.contextPath}/paroquias/${paroquia.id}/edit" class="btn btn-primary">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+					</td>
+					<td>
+						<form action="${pageContext.request.contextPath}/paroquias/${paroquia.id}" method="post">
 							<input type="hidden" name="_method" value="delete" />
-							<button type="submit" onclick="return confirm('Are you sure?')"
-								class="btn btn-danger ">
-								<span class="glyphicon glyphicon-trash" />
+							<button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger ">
+								<span class="glyphicon glyphicon-trash"></span>
 							</button>
 						</form>
 					</td>

@@ -1,10 +1,11 @@
 package br.com.cleiton.modelo;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -20,14 +21,23 @@ public class Pessoa extends Entity {
 	private String endereco="";
 	private String bairro="";
 	private String nomeConjugue;
+	private String nomeCrachaConjugue;
+	private String nomeCracha;
 	@Enumerated(EnumType.STRING)
 	private TipoPessoa tipoPessoa;
 	@CollectionOfElements(fetch=FetchType.LAZY)
 	private List<String> telefones;
 	
+	
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Paroquia paroquia;
 	
+
+	public Pessoa() {
+		super();
+		telefones = new ArrayList<String>();
+	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -43,6 +53,10 @@ public class Pessoa extends Entity {
 
 	public Date getDataNascimento() {
 		return dataNascimento;
+	}
+	public String getDataNascimentoFormatado() {
+		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy"); 
+		return fmt.format(dataNascimento);
 	}
 
 	public void setEmail(String email) {
@@ -94,7 +108,7 @@ public class Pessoa extends Entity {
 	}
 	public String getFonesTemplate() {
 		StringBuilder builder= new StringBuilder();
-		for (Iterator<String> iterator = telefones.iterator(); iterator.hasNext();) {
+		for (Iterator<String> iterator = getTelefones().iterator(); iterator.hasNext();) {
 			String telefone = (String) iterator.next();
 			builder.append(telefone);
 			if(iterator.hasNext())
@@ -102,4 +116,32 @@ public class Pessoa extends Entity {
 		}
 		return builder.toString();
 	}
+
+	public List<String> getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(List<String> telefones) {
+		this.telefones = telefones;
+	}
+
+	public String getNomeCracha() {
+		return nomeCracha;
+	}
+
+	public void setNomeCracha(String nomeCracha) {
+		this.nomeCracha = nomeCracha;
+	}
+
+	public String getNomeCrachaConjugue() {
+		return nomeCrachaConjugue;
+	}
+
+	public void setNomeCrachaConjugue(String nomeCrachaConjugue) {
+		this.nomeCrachaConjugue = nomeCrachaConjugue;
+	}
+	
+	
+	
+	
 }

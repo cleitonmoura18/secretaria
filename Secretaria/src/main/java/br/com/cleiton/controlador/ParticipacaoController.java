@@ -9,12 +9,17 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.ValidationMessage;
+import br.com.caelum.vraptor.view.Results;
+import br.com.cleiton.components.EnumMensagem;
+import br.com.cleiton.components.Mensagem;
 import br.com.cleiton.components.UsuarioSession;
 import br.com.cleiton.modelo.Encontro;
 import br.com.cleiton.modelo.Equipe;
 import br.com.cleiton.modelo.Paroquia;
 import br.com.cleiton.modelo.Participacao;
 import br.com.cleiton.repositorio.EncontroRepository;
+import br.com.cleiton.repositorio.EquipeRepository;
 import br.com.cleiton.repositorio.PartipacaoRepository;
 import br.com.cleiton.repositorio.PessoaRepository;
 
@@ -24,6 +29,7 @@ public class ParticipacaoController {
 	private final Result result;
 	private final PartipacaoRepository repository;
 	private final EncontroRepository encontroRepository;
+	private final EquipeRepository equipeRepository;
 	private final UsuarioSession session;
 	private final Validator validator;
 	private final PessoaRepository pessoaRepository;
@@ -32,7 +38,7 @@ public class ParticipacaoController {
 	public ParticipacaoController(Result result,
 			PartipacaoRepository repository,
 			EncontroRepository encontroRepository, UsuarioSession session,
-			Validator validator, PessoaRepository pessoaRepository) {
+			Validator validator, PessoaRepository pessoaRepository,EquipeRepository equipeRepository ) {
 		super();
 		this.result = result;
 		this.repository = repository;
@@ -40,6 +46,7 @@ public class ParticipacaoController {
 		this.session = session;
 		this.validator = validator;
 		this.pessoaRepository = pessoaRepository;
+		this.equipeRepository = equipeRepository;
 	}
 
 	@Get("/participacaos")
@@ -49,12 +56,24 @@ public class ParticipacaoController {
 	
 	@Post("/participacaos")
 	public void create(Participacao participacao) {
+		Equipe equipe = equipeRepository.find(participacao.getEquipe().getId());
+		participacao.setEquipe(equipe);
 		validator.validate(participacao);
+		if(participacao.getEquipe().isPrecisaPapelNaEquipe()){
+			if(participacao.getPapelNaEquipe().getId() == null){
+		 	result.use(Results.json()).from(new Mensagem(EnumMensagem.ERRO,"Faltando Informar Papel na Equipe")).serialize();
+		 	return ;
+			}
+		}else{
+			participacao.setPapelNaEquipe(null);
+		}
 		validator.onErrorUsePageOf(this).newPartipacao(participacao.getEquipe().getId());
 		participacao.getPessoa().setParoquia(new Paroquia(session.getIdParoquia()));
+		
 		pessoaRepository.create(participacao.getPessoa());
+		
 		repository.create(participacao);
-		result.redirectTo(this).index();
+		result.use(Results.json()).from(new Mensagem("Salvo com Sucesso")).serialize();
 	}
 	
 	@Get("equipe/{equipeId}/participacaos/new")
@@ -75,16 +94,28 @@ public class ParticipacaoController {
 	@Put("/participacaos")
 	public void update(Participacao participacao) {
 		validator.validate(participacao);
+		if(participacao.getEquipe().isPrecisaPapelNaEquipe()){
+			if(participacao.getPapelNaEquipe().getId() == null){
+		 	result.use(Results.json()).from(new Mensagem(EnumMensagem.ERRO,"Salvo com Sucesso")).serialize();
+		 	return ;
+			}
+		}else{
+			participacao.setPapelNaEquipe(null);
+		}
 		validator.onErrorUsePageOf(this).edit(participacao);
+		
 		participacao.getPessoa().setParoquia(new Paroquia(session.getIdParoquia()));
-		pessoaRepository.create(participacao.getPessoa());
+		pessoaRepository.update(participacao.getPessoa());
 		repository.update(participacao);
-		result.redirectTo(this).index();
+		result.include("mensagem","Salvo com Sucesso");
+		result.use(Results.json()).from(new Mensagem("Salvo com Sucesso")).serialize();
+		
 	}
 	
 	@Get("/participacaos/{participacao.id}/edit")
 	public Participacao edit(Participacao participacao) {
-		
+		Encontro encontro = encontroRepository.find(session.getIdEncontro());
+		result.include("papeis",encontro.getPapeisNaEquipe());
 		return repository.find(participacao.getId());
 	}
 

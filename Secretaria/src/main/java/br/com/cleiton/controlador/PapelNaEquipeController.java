@@ -55,7 +55,7 @@ public class PapelNaEquipeController {
 		papelNaEquipe.setEncontro(encontro);
 		papelNaEquipe.setOrdemImpressao(encontro.getPapeisNaEquipe().size());
 		repository.create(papelNaEquipe);
-		result.redirectTo(this).index();
+		result.redirectTo(EncontroController.class).show(encontro);
 	}
 	
 	@Get("/papelNaEquipes/new")
@@ -70,7 +70,7 @@ public class PapelNaEquipeController {
 		Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
 		papelNaEquipe.setEncontro(encontro);
 		repository.update(papelNaEquipe);
-		result.redirectTo(this).index();
+		result.redirectTo(EncontroController.class).show(encontro);
 	}
 	
 	@Get("/papelNaEquipes/{papelNaEquipe.id}/edit")

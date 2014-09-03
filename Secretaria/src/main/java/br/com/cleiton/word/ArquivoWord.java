@@ -2,7 +2,6 @@ package br.com.cleiton.word;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,9 +48,10 @@ public class ArquivoWord {
 				inserirQuebraDePagina();
 		}
 	}
-
+	
 	private void criarEquipe(Equipe equipe, List<PapelNaEquipe> papelNaEquipes) {
 		criarNomeEquipe(equipe.getName());
+		if(equipe.isPrecisaPapelNaEquipe()){
 		// Inserir papel na equipe
 		for (PapelNaEquipe papelNaEquipe : papelNaEquipes) {
 			List<Participacao> partipacao = equipe
@@ -64,6 +64,13 @@ public class ArquivoWord {
 				}
 			}
 
+		}
+		}else{
+			List<Participacao> partipacao = equipe.getPartipacao();
+			for (Participacao participacao : partipacao) {
+				Pessoa pessoa = participacao.getPessoa();
+				criarParticipante(pessoa);
+			}
 		}
 	}
 
@@ -81,7 +88,9 @@ public class ArquivoWord {
 		formatarPadraoOutrosDadosServo(paragrafo, "Endereço: " + pessoa.getEndereco());
 		formatarPadraoOutrosDadosServo(paragrafo, "Bairro: " + pessoa.getBairro());
 		formatarPadraoOutrosDadosServo(paragrafo,"Fones: " + pessoa.getFonesTemplate());
-		formatarPadraoOutrosDadosServo(paragrafo, "E-mail: " + pessoa.getEmail());
+		if(pessoa.getEmail()!= null){
+			formatarPadraoOutrosDadosServo(paragrafo, "E-mail: " + pessoa.getEmail());
+		}
 		String dataFormatada = "";
 		if (pessoa.getDataNascimento() != null)
 			dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(pessoa
@@ -91,12 +100,12 @@ public class ArquivoWord {
 	}
 
 	public void carregarArquivo(String path) throws IOException {
-		document = new XWPFDocument(new FileInputStream(new File(path)));
+		document = new XWPFDocument();
 
 	}
 
 	public void finalizarArquivo() throws FileNotFoundException, IOException {
-		File file = new File("C:/Users/Cleiton/Desktop/poi.docx");
+		File file = new File("C:/Users/clebert/Desktop/Quadrilha.docx");
 
 		document.write(new FileOutputStream(file));
 		Desktop.getDesktop().open(file);

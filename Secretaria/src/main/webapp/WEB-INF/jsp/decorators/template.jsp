@@ -1,5 +1,4 @@
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
-	prefix="decorator"%>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <!DOCTYPE html>
 <html>
 
@@ -7,9 +6,8 @@
 <%@include file="head.jsp"%>
 <decorator:head />
 </head>
-
 <body class="">
-	<div class="container">
+	<div class="container" id="paroquias-app">
 		<br>
 		<%@include file="cabecalho.jsp"%>
 
@@ -24,9 +22,6 @@
 		</div>
 		<%@include file="rodape.jsp"%>
 	</div>
-
 </body>
 <%@include file="script.jsp"%>
-
-
 </html>

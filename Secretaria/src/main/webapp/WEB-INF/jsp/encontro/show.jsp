@@ -1,20 +1,10 @@
 <head>
-	<title>Encontro [show]</title>
+	<title>${encontro.tema }</title>
 </head>
 <body>
-	<p>
-		<b>Name:</b>
-		${encontro.tema}
-	</p>
-	<p>
-		<b>Data inicio:</b>
-		${encontro.dataInicio}
-	</p>
-	<p>
-		<b>Data fim:</b>
-		${encontro.dataFim}
-	</p>
-
-	<a href="${pageContext.request.contextPath}/encontros/${encontro.id}/edit">Edit</a>
-	<a href="${pageContext.request.contextPath}/encontros">Back</a>
+	<div class="page-header" align="center">
+		<h1>Encontro: ${encontro.tema}</h1>
+	</div>
+	<%@include file="../equipe/listEquipe.jsp"%>
+	<%@include file="../papelNaEquipe/listPapelnaEquipe.jsp"%>
 </body>

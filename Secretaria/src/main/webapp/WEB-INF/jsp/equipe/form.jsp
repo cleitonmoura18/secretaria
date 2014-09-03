@@ -23,6 +23,8 @@
 						value="${equipe.name}" id="name" placeholder="Nome da Equipe" required>
 				</div>
 			</div>
+			<input type="hidden" name="equipe.ordemImpressao"
+						value="${equipe.ordemImpressao}"/>
 			<div class="form-group text-right">
 				<div class="col-lg-offset-2 col-lg-10">
 					<button type="submit" class="btn btn-default btn-primary "
