@@ -12,6 +12,7 @@ public class Participacao extends Entity implements Comparable<Participacao>{
 	private Pessoa pessoa;
 	@ManyToOne(fetch=FetchType.LAZY,optional=false)
 	private Equipe equipe;
+	
 
 	public Equipe getEquipe() {
 		return equipe;

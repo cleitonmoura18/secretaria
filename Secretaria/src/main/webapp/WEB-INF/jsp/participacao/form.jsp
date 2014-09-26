@@ -35,6 +35,21 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label for="nome" class="col-sm-3 control-label">Círculo:</label>
+		<div class="col-sm-9">
+			<select name="participacao.pessoa.circulo.id" id="papelNaequipe"
+				class="form-control">
+				<option value=""></option>
+				<c:forEach items="${circulos}" var="circulo">
+				${participacao.pessoa.circulo.id}
+					<option value="${circulo.id}"
+						<c:if test="${participacao.pessoa.circulo.id==circulo.id}">selected="selected"</c:if>>${circulo.name}</option>
+				</c:forEach>
+			</select>
+		</div>
+	</div>
+	
+	<div class="form-group">
 		<label for="nome" class="col-sm-3 control-label" id="nomeLabel">Nome:</label>
 		<div class="col-sm-9">
 			<input type="text" name="participacao.pessoa.nome" id="nome"

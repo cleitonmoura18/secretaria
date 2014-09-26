@@ -23,6 +23,39 @@
 						value="${equipe.name}" id="name" placeholder="Nome da Equipe" required>
 				</div>
 			</div>
+			<div class="form-group">
+				<label for="precisaPapelNaEquipe" class="col-lg-2 control-label">Precisa de Papel?</label>
+					
+					Sim <input type="radio" class="form-control-inline" name="equipe.precisaPapelNaEquipe"
+						value="true" id="name" placeholder="A equipe precisa informar Papel do participante" 
+						<c:if test="${equipe.precisaPapelNaEquipe}">
+							checked="checked"
+						</c:if>
+						>
+					   Não <input type="radio" class="form-control-inline" name="equipe.precisaPapelNaEquipe" 
+						value="false" id="name" placeholder="A equipe precisa informar Papel do participante"
+						<c:if test="${equipe.precisaPapelNaEquipe ne true}">
+							checked="checked"
+						</c:if> >
+						
+			</div>
+			<div class="form-group">
+				<label for="circulo" class="col-lg-2 control-label">Círculo?</label>
+					
+					Sim <input type="radio" class="form-control-inline" name="equipe.circulo"
+						value="true" id="name" placeholder="A equipe precisa informar Papel do participante" 
+						<c:if test="${equipe.circulo}">
+							checked="checked"
+						</c:if>
+						>
+					   Não <input type="radio" class="form-control-inline" name="equipe.circulo" 
+						value="false" id="name" placeholder="A equipe precisa informar Papel do participante"
+						<c:if test="${equipe.circulo ne true}">
+							checked="checked"
+						</c:if> >
+						
+			</div>
+			
 			<input type="hidden" name="equipe.ordemImpressao"
 						value="${equipe.ordemImpressao}"/>
 			<div class="form-group text-right">
@@ -31,6 +64,8 @@
 						id="submit">Salvar</button>
 				</div>
 			</div>
+			
+			
 		</fieldset>
 	</form>
 </div>

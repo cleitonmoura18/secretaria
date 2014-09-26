@@ -19,6 +19,7 @@ public class Equipe extends Entity implements Comparable<Equipe> {
 	private List<Participacao> partipacao;
 	
 	private boolean precisaPapelNaEquipe;
+	private boolean circulo;
 
 	public void setName(String name) {
 		this.name = name;
@@ -81,6 +82,14 @@ public class Equipe extends Entity implements Comparable<Equipe> {
 
 	public void setPrecisaPapelNaEquipe(boolean precisaPapelNaEquipe) {
 		this.precisaPapelNaEquipe = precisaPapelNaEquipe;
+	}
+
+	public boolean isCirculo() {
+		return circulo;
+	}
+
+	public void setCirculo(boolean circulo) {
+		this.circulo = circulo;
 	}
 
 	

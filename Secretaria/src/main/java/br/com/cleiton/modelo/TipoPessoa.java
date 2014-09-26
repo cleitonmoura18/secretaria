@@ -1,7 +1,7 @@
 package br.com.cleiton.modelo;
 
 public enum TipoPessoa {
-	PADRE("Padre","Data de Ordenação" ), JOVEM("Jovem","Data de Nascimento"), CASAL("Casal","Data de Cassamento");
+	PADRE("Padre","Data de Ordenação" ), JOVEM("Jovem","Data de Nascimento"), CASAL("Casal","Data de Casamento");
 	private String descricao;
 	private String data;
 

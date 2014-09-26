@@ -57,9 +57,11 @@ public class ParticipacaoController {
 	@Post("/participacaos")
 	public void create(Participacao participacao) {
 		Equipe equipe = equipeRepository.find(participacao.getEquipe().getId());
-		participacao.setEquipe(equipe);
 		validator.validate(participacao);
-		if(participacao.getEquipe().isPrecisaPapelNaEquipe()){
+		if(participacao.getPessoa().getCirculo().getId() == null){
+			participacao.getPessoa().setCirculo(null);
+		}
+		if(equipe.isPrecisaPapelNaEquipe()){
 			if(participacao.getPapelNaEquipe().getId() == null){
 		 	result.use(Results.json()).from(new Mensagem(EnumMensagem.ERRO,"Faltando Informar Papel na Equipe")).serialize();
 		 	return ;
@@ -81,6 +83,7 @@ public class ParticipacaoController {
 		Participacao participacao = new Participacao();
 		Encontro encontro = encontroRepository.find(session.getIdEncontro());
 		result.include("papeis",encontro.getPapeisNaEquipe());
+		result.include("circulos",encontro.getCirculos());
 		sair:
 		for (Equipe equipe : encontro.getEquipes()) {
 			if(equipe.getId().equals(equipeId)){
@@ -93,9 +96,13 @@ public class ParticipacaoController {
 	
 	@Put("/participacaos")
 	public void update(Participacao participacao) {
+		Equipe equipe = equipeRepository.find(participacao.getEquipe().getId());
 		validator.validate(participacao);
-		if(participacao.getEquipe().isPrecisaPapelNaEquipe()){
-			if(participacao.getPapelNaEquipe().getId() == null){
+		if(participacao.getPessoa().getCirculo().getId() == null){
+			participacao.getPessoa().setCirculo(null);
+		}
+		if(equipe.isPrecisaPapelNaEquipe()){
+			if(equipe.getId() == null){
 		 	result.use(Results.json()).from(new Mensagem(EnumMensagem.ERRO,"Salvo com Sucesso")).serialize();
 		 	return ;
 			}
@@ -116,6 +123,7 @@ public class ParticipacaoController {
 	public Participacao edit(Participacao participacao) {
 		Encontro encontro = encontroRepository.find(session.getIdEncontro());
 		result.include("papeis",encontro.getPapeisNaEquipe());
+		result.include("circulos",encontro.getCirculos());
 		return repository.find(participacao.getId());
 	}
 

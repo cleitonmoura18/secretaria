@@ -10,8 +10,11 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CollectionOfElements;
+
+import br.com.cleiton.components.Utils;
 @javax.persistence.Entity
 public class Pessoa extends Entity {
 
@@ -23,6 +26,9 @@ public class Pessoa extends Entity {
 	private String nomeConjugue;
 	private String nomeCrachaConjugue;
 	private String nomeCracha;
+	@ManyToOne(optional=true)
+	private Equipe circulo;
+	
 	@Enumerated(EnumType.STRING)
 	private TipoPessoa tipoPessoa;
 	@CollectionOfElements(fetch=FetchType.LAZY)
@@ -110,7 +116,7 @@ public class Pessoa extends Entity {
 		StringBuilder builder= new StringBuilder();
 		for (Iterator<String> iterator = getTelefones().iterator(); iterator.hasNext();) {
 			String telefone = (String) iterator.next();
-			builder.append(telefone);
+			builder.append("(86)").append(Utils.format("####-####",telefone.replaceAll("[^\\d.]", "")));
 			if(iterator.hasNext())
 				builder.append("/");
 		}
@@ -139,6 +145,14 @@ public class Pessoa extends Entity {
 
 	public void setNomeCrachaConjugue(String nomeCrachaConjugue) {
 		this.nomeCrachaConjugue = nomeCrachaConjugue;
+	}
+
+	public Equipe getCirculo() {
+		return circulo;
+	}
+
+	public void setCirculo(Equipe circulo) {
+		this.circulo = circulo;
 	}
 	
 	

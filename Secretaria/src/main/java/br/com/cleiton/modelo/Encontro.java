@@ -1,5 +1,6 @@
 package br.com.cleiton.modelo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -87,6 +88,16 @@ public class Encontro extends Entity {
 
 	public void setPapeisNaEquipe(List<PapelNaEquipe> papeisNaEquipe) {
 		this.papeisNaEquipe = papeisNaEquipe;
+	}
+	
+	public List<Equipe> getCirculos() {
+		ArrayList<Equipe> circulos = new ArrayList<Equipe>();
+		for (Equipe equipe : equipes) {
+			if(equipe.isCirculo()){
+				circulos.add(equipe);
+			}
+		}
+		return circulos;
 	}
 	
 

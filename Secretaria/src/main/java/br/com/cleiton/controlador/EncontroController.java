@@ -6,8 +6,10 @@ import java.util.List;
 
 import br.com.cleiton.components.UsuarioSession;
 import br.com.cleiton.modelo.Encontro;
+import br.com.cleiton.modelo.Equipe;
 import br.com.cleiton.modelo.Paroquia;
 import br.com.cleiton.repositorio.EncontroRepository;
+import br.com.cleiton.repositorio.EquipeRepository;
 import br.com.cleiton.repositorio.ParoquiaRepository;
 import br.com.cleiton.word.ArquivoWord;
 import br.com.caelum.vraptor.Delete;
@@ -17,50 +19,70 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.interceptor.download.Download;
 
 @Resource
 public class EncontroController {
 
 	private final Result result;
 	private final EncontroRepository repository;
+	private final EquipeRepository equipeRepository;
 	private final ParoquiaRepository paroquiaRepository;
 	private final UsuarioSession session;
-	
+
 	private final Validator validator;
-	
-	public EncontroController(Result result, EncontroRepository repository, ParoquiaRepository paroquiaRepository,
-	Validator validator,UsuarioSession session) {
+
+	public EncontroController(Result result, EncontroRepository repository,
+			EquipeRepository equipeRepository,
+			ParoquiaRepository paroquiaRepository, Validator validator,
+			UsuarioSession session) {
 		this.result = result;
+		this.equipeRepository = equipeRepository;
 		this.repository = repository;
-		this.paroquiaRepository=paroquiaRepository;
+		this.paroquiaRepository = paroquiaRepository;
 		this.validator = validator;
-		this.session=session;
+		this.session = session;
 	}
-	@Get("criarQuadrante/{idQuadrante}")
-	public  void criarQuadrante(Long idQuadrante){
-		ArquivoWord arquivoWord= new ArquivoWord();
+
+	@Get("criarQuadrante")
+	public Download criarQuadrante() {
+		ArquivoWord arquivoWord = new ArquivoWord();
 		try {
-			arquivoWord.criarQuadrante(repository.find(idQuadrante));
+			return arquivoWord.criarQuadrante(repository.find(session
+					.getIdEncontro()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
-	
+
+	@Get("criarQuadrante/equipe/{idEquipe}")
+	public Download criarEquipe(Long idEquipe) {
+		ArquivoWord arquivoWord = new ArquivoWord();
+		try {
+			Equipe equipe = equipeRepository.find(idEquipe);
+			return arquivoWord.criarEquipe(equipe.getEncontro(), equipe);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	@Get("/encontros")
 	public List<Encontro> index() {
 		return repository.findAll();
 	}
-	
+
 	@Post("/encontros")
 	public void create(Encontro encontro) {
 		validator.validate(encontro);
 		validator.onErrorUsePageOf(this).newEncontro();
 		encontro.setParoquia(paroquiaRepository.find(session.getIdParoquia()));
 		repository.create(encontro);
-		result.redirectTo(ParoquiaController.class).listEncontros(encontro.getParoquia().getId());
+		result.redirectTo(ParoquiaController.class).listEncontros(
+				encontro.getParoquia().getId());
 	}
-	
+
 	@Get("/encontros/new")
 	public Encontro newEncontro() {
 		Encontro encontro = new Encontro();
@@ -68,16 +90,17 @@ public class EncontroController {
 		encontro.getParoquia().setId(session.getIdParoquia());
 		return encontro;
 	}
-	
+
 	@Put("/encontros")
 	public void update(Encontro encontro) {
 		validator.validate(encontro);
 		validator.onErrorUsePageOf(this).edit(encontro);
 		encontro.setParoquia(paroquiaRepository.find(session.getIdParoquia()));
 		repository.update(encontro);
-		result.redirectTo(ParoquiaController.class).listEncontros(session.getIdParoquia());
+		result.redirectTo(ParoquiaController.class).listEncontros(
+				session.getIdParoquia());
 	}
-	
+
 	@Get("/encontros/{encontro.id}/edit")
 	public Encontro edit(Encontro encontro) {
 		return repository.find(encontro.getId());
@@ -95,9 +118,10 @@ public class EncontroController {
 	@Delete("/encontros/{encontro.id}")
 	public void destroy(Encontro encontro) {
 		repository.destroy(repository.find(encontro.getId()));
-		result.redirectTo(this).index();  
+		result.redirectTo(this).index();
 	}
-public static void main(String[] args) {
-	
-}
+
+	public static void main(String[] args) {
+
+	}
 }

@@ -149,12 +149,48 @@ public class EquipeController {
 		}
 		return Utils.createXLSX(nomeCracahas, nomearquivo);
 	}
+	@Get({"/cracha/servos"})
+	public Download nomeCracahServos() throws IOException {
+		return crachasServosEEncontristas(true);
+	}
+	
+	@Get({"/cracha/encontristas"})
+	public Download nomeCrachaEncontristas() throws IOException {
+		return crachasServosEEncontristas(false);
+	}
+
+	private Download crachasServosEEncontristas(Boolean servos)
+			throws IOException {
+		List<String> nomeCracahas = new ArrayList<String>();
+		nomeCracahas.add("Nome;Equipe");
+		String nomearquivo = "Crachás ";
+
+		Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
+		for (Equipe equipe : encontro.getEquipes()) {
+			if (servos) {
+				if (!equipe.isCirculo()) {
+					
+					inserirEquipe(nomeCracahas, equipe);
+				}
+			} else {
+				if (equipe.isCirculo()) {
+					inserirEquipe(nomeCracahas, equipe);
+				}
+			}
+		}
+		if(servos)
+			nomearquivo += "Crachas Servos";
+		else
+			nomearquivo += "Crachas Encontristas";
+		return Utils.createXLSX(nomeCracahas, nomearquivo);
+	}
+
 
 	private void inserirEquipe(List<String> nomeCracahas, Equipe equipe) {
 		for (Participacao participacao : equipe.getPartipacao()) {
 			if(participacao.getPessoa().getTipoPessoa().equals(TipoPessoa.CASAL)){
-				nomeCracahas.add("Tio " +participacao.getPessoa().getNomeCracha()+" e "+participacao.getPessoa().getNomeCrachaConjugue()+" "+Utils.DELIMITADOR+" "+equipe.getName());
-				nomeCracahas.add("Tia "+ participacao.getPessoa().getNomeCrachaConjugue()+" e "+participacao.getPessoa().getNomeCracha()+" "+Utils.DELIMITADOR+" "+equipe.getName());
+				nomeCracahas.add("Tio " +participacao.getPessoa().getNomeCracha()+" e Tia "+participacao.getPessoa().getNomeCrachaConjugue()+" "+Utils.DELIMITADOR+" "+equipe.getName());
+				nomeCracahas.add("Tia "+ participacao.getPessoa().getNomeCrachaConjugue()+" e Tio "+participacao.getPessoa().getNomeCracha()+" "+Utils.DELIMITADOR+" "+equipe.getName());
 			}else{
 				nomeCracahas.add(participacao.getPessoa().getNomeCracha()+" "+Utils.DELIMITADOR+" "+equipe.getName());
 			}
