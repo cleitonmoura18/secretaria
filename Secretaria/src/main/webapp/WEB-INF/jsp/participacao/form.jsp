@@ -18,7 +18,13 @@
 		<legend id="titulo">Jovem</legend>
 	</div>
 	<input type="hidden" name="participacao.equipe.id" value="${participacao.equipe.id}"/>
-	<input type="hidden" name="participacao.pessoa.tipoPessoa" id="tipoPessoa" value="JOVEM" />
+	<c:if test="${empty participacao.id}">
+		<input type="hidden" name="participacao.pessoa.tipoPessoa" id="tipoPessoa" value="JOVEM" />
+	</c:if>
+	<c:if test="${not empty participacao.id}">
+		<input type="hidden" name="participacao.pessoa.tipoPessoa" id="tipoPessoa" value="${participacao.pessoa.tipoPessoa}" />
+	</c:if>
+	
 	 <input type="hidden" name="participacao.pessoa.id"	value="${participacao.pessoa.id}" />
 	<div class="form-group">
 		<label for="nome" class="col-sm-3 control-label">Papel Na Equipe:</label>
