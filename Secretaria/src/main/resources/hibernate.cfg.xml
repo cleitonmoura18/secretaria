@@ -12,5 +12,6 @@
   <mapping class="br.com.cleiton.modelo.sistema.Cidade"/>
   <mapping class="br.com.cleiton.modelo.sistema.Estado"/>
   <mapping class="br.com.cleiton.modelo.Participacao"/>
+  <mapping class="br.com.cleiton.modelo.sistema.Usuario"/>
  </session-factory>
 </hibernate-configuration>
