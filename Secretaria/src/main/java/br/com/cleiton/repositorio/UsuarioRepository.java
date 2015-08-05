@@ -19,5 +19,11 @@ public interface UsuarioRepository {
 	Usuario find(Long id);
 	
 	List<Usuario> findAll();
+	
+	Usuario findByLogin(String login);
+	
+	Usuario findByEmail(String email);
+	
+	
 
 }

@@ -28,10 +28,18 @@ public class UsuarioSession {
 	}
 
 	public boolean isLogged() {
-		return user != null;
+		return getUser() != null;
 	}
 
 	public void logout() {
-		user = null;
+		setUser(null);
+	}
+
+	public Usuario getUser() {
+		return user;
+	}
+
+	public void setUser(Usuario user) {
+		this.user = user;
 	}
 }
