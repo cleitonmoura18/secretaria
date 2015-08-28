@@ -3,6 +3,7 @@ package br.com.cleiton.modelo.sistema;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 /**
  * Representa os usuarios que tem acesso ao sistema
  * @author Cleiton
@@ -16,6 +17,8 @@ public class Usuario {
 	private String nomeUsuario;
 	private String email;
 	private String senha;
+	@Transient
+	private String senhaRepetida;
 
 	/**
 	 * @return the idUsuario
@@ -75,6 +78,14 @@ public class Usuario {
 	 */
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getSenhaRepetida() {
+		return senhaRepetida;
+	}
+
+	public void setSenhaRepetida(String senhaRepetida) {
+		this.senhaRepetida = senhaRepetida;
 	}
 
 }

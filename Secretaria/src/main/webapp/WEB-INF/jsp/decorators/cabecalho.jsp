@@ -10,8 +10,10 @@
 	</div>
 	<div class="collapse navbar-collapse navbar-ex1-collapse">
 		<ul class="nav navbar-nav navbar-right">
-			<li class="active"><a href="#">Home</a></li>
-			<li><a href="#">Contacts</a></li>
+			<li><a href="${pageContext.request.contextPath}/encontros">Home</a></li>
+			<c:if test="${not empty usuarioSession.user}">
+			<li><a href="${pageContext.request.contextPath}/logout">Sair</a></li>
+			</c:if>
 		</ul>
 	</div>
 </div>

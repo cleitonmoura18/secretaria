@@ -15,7 +15,7 @@ public class UsuarioRepositoryImpl extends Repository<Usuario, Long>implements U
 
 	@Override
 	public Usuario findByLogin(String login) {
-		return (Usuario) session.createCriteria(Usuario.class).add(Restrictions.eq("login", login)).uniqueResult();
+		return (Usuario) session.createCriteria(Usuario.class).add(Restrictions.eq("nomeUsuario", login)).uniqueResult();
 	}
 
 	@Override

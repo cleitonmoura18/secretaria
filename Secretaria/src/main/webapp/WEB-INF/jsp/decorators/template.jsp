@@ -1,4 +1,5 @@
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
+	prefix="decorator"%>
 <!DOCTYPE html>
 <html>
 
@@ -14,13 +15,22 @@
 		<div class="row">
 
 			<%@include file="erro.jsp"%>
-			<%@include file="menuEncontro.jsp"%>
-			
-			<div class="col-md-10">
-				<decorator:body />
-			</div>
+
+			<c:choose>
+				<c:when test="${not empty usuarioSession.user}">
+					<%@include file="menuEncontro.jsp"%>
+					<div class="col-md-10">
+				</c:when>
+				<c:otherwise>
+					<div class="col-md-12">
+				</c:otherwise>
+			</c:choose>
+
+
+			<decorator:body />
 		</div>
-		<%@include file="rodape.jsp"%>
+	</div>
+	<%@include file="rodape.jsp"%>
 	</div>
 </body>
 <%@include file="script.jsp"%>
