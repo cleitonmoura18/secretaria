@@ -1,9 +1,10 @@
 <head>
-	<title>Encontro [index]</title>
+<title>Lista de Encontros</title>
 </head>
 <body>
-	<h1>Listing Encontros</h1>
+	<div class="page-header" align="center">
+		<h1>Lista de Encontros</h1>
+	</div>
 	<%@include file="list.jsp"%>
-		<br />
-	<a href="${pageContext.request.contextPath}/encontros/new">New Encontro</a> 
+
 </body>

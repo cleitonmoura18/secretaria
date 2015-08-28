@@ -1,4 +1,13 @@
+<div class="panel panel-primary">
 
+		<div class="panel-heading " align="center">
+			<h3 class="panel-title text-center" style="position: relative">
+				Lista dos Encontros<a
+					href="${pageContext.request.contextPath}/encontros/new"
+					class="btn btn-success glyphicon glyphicon-plus"
+					style="position: absolute; right: -8px; top: -8px"></a>
+			</h3>
+		</div>
 <table class="table table-striped table-condensed table-responsive">
 	<tr>
 		<th>Tema</th>
@@ -40,3 +49,5 @@
 		</tr>
 	</c:forEach>
 </table>
+
+	</div>

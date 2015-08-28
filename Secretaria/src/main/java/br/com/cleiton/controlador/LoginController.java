@@ -52,7 +52,7 @@ public class LoginController {
 		if (user != null && user.getSenha().equals(senhaCriptografada)) {
 			
 			usuarioSession.setUser(user);
-			result.redirectTo(EncontroController.class).index();
+			result.redirectTo(ParoquiaController.class).index();
 		} else {
 			validator.add(new ValidationMessage("As senhas informadas não estão iguais", "senhaErrada"));
 			 validator.onErrorUsePageOf(LoginController.class)
