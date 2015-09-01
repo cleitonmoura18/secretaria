@@ -1,6 +1,7 @@
 package br.com.cleiton.controlador;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
@@ -47,6 +48,7 @@ public class LoginController {
 	@Public
 	@Post("/autenticar")
 	public void autenticar(Usuario usuario) throws NoSuchAlgorithmException {
+		
 		Usuario user = repository.findByLogin(usuario.getNomeUsuario());
 		String senhaCriptografada = CriptoUtils.criptografa(usuario.getSenha());
 		if (user != null && user.getSenha().equals(senhaCriptografada)) {
@@ -54,7 +56,7 @@ public class LoginController {
 			usuarioSession.setUser(user);
 			result.redirectTo(ParoquiaController.class).index();
 		} else {
-			validator.add(new ValidationMessage("As senhas informadas não estão iguais", "senhaErrada"));
+			validator.add(new ValidationMessage("Usuário ou senha não conferem", "senhaErrada"));
 			 validator.onErrorUsePageOf(LoginController.class)
 		      .login();
 		}
@@ -96,6 +98,23 @@ public class LoginController {
 	@Get("/usuarios/{usuario.idUsuario}")
 	public Usuario show(Usuario usuario) {
 		return repository.find(usuario.getIdUsuario());
+	}
+
+	@Public
+	@Get("/usuarios/criarUsuarioCleiton")
+	public void show() throws NoSuchAlgorithmException {
+		Usuario usuario = new Usuario();
+		usuario.setEmail("cleitonmoura18@gmail.com");
+		usuario.setNomeUsuario("cleiton");
+		usuario.setSenha(CriptoUtils.criptografa("java"));
+		List<Usuario> findAll = repository.findAll();
+		System.out.println(findAll.size());
+		for (Usuario usuario2 : findAll) {
+			System.out.println(usuario2.getNomeUsuario());
+		}
+		if (findAll.size() == 0) {
+			repository.create(usuario);
+		}
 	}
 
 	public void verificarSenhasIguias(Usuario usuario)

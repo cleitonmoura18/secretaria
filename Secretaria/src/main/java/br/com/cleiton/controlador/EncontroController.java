@@ -1,6 +1,7 @@
 package br.com.cleiton.controlador;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class EncontroController {
 	}
 
 	@Get("criarQuadrante")
-	public Download criarQuadrante() {
+	public Download criarQuadrante() throws URISyntaxException {
 		ArquivoWord arquivoWord = new ArquivoWord();
 		try {
 			return arquivoWord.criarQuadrante(repository.find(session
@@ -57,7 +58,7 @@ public class EncontroController {
 	}
 
 	@Get("criarQuadrante/equipe/{idEquipe}")
-	public Download criarEquipe(Long idEquipe) {
+	public Download criarEquipe(Long idEquipe) throws URISyntaxException {
 		ArquivoWord arquivoWord = new ArquivoWord();
 		try {
 			Equipe equipe = equipeRepository.find(idEquipe);

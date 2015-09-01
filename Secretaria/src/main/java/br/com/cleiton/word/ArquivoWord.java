@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
@@ -37,15 +39,15 @@ public class ArquivoWord {
 	private XWPFDocument document;
 	private String fonte = "Times New Roman";
 	private String nomeArquivo;
-	private final String path = "C:/Users/clebert/Documents/Cleiton/Documentos do Encontro/Quadrante/Modelo 2 colunas.docx";
+	private final String path = "/arquivos/Modelo 2 Colunas.docx";
 	
-	public Download criarQuadrante(Encontro encontro) throws IOException {
+	public Download criarQuadrante(Encontro encontro) throws IOException, URISyntaxException {
 		carregarArquivo(path);
 		criarEncontro(encontro);
 		nomeArquivo = "Quadrante " + encontro.getTema();
 		return finalizarArquivo();
 	}
-	public Download criarEquipe(Encontro encontro, Equipe equipe) throws IOException {
+	public Download criarEquipe(Encontro encontro, Equipe equipe) throws IOException, URISyntaxException {
 		carregarArquivo(path);
 		Collections.sort(encontro.getPapeisNaEquipe());
 		criarEquipe(equipe, encontro.getPapeisNaEquipe());
@@ -143,8 +145,10 @@ public class ArquivoWord {
 				.getData() + ": " + dataFormatada);
 	}
 
-	public void carregarArquivo(String path) throws IOException {
-		document = new XWPFDocument(new FileInputStream(new File(path)));
+	public void carregarArquivo(String path) throws IOException, URISyntaxException {
+		URL resource = getClass().getResource(path);
+		System.out.println(resource);
+		document = new XWPFDocument(new FileInputStream(new File(resource.toURI())));
 
 	}
 
