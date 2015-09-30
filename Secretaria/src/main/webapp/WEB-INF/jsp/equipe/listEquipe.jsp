@@ -45,9 +45,9 @@
 					
 					<td>
 					<a 
-						href="${pageContext.request.contextPath}/cracha/${equipe.id}"
-						class="btn btn-primary " title ="Baixar o nome dos Jovens para a Confecção de Crachás"/> 
-						<span class="glyphicon glyphicon-file" ></span>
+						href="${pageContext.request.contextPath}/equipes/copia/${equipe.id}"
+						class="btn btn-primary " title ="Escolher os Jovens que fizeram os encontros Passados"/> 
+						<span class="glyphicon glyphicon-pencil" ></span>
 					</td>
 					<td>
 					<a 

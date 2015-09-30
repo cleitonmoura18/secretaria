@@ -19,6 +19,8 @@
 		</div>
 
 		<%@include file="../participacao/listParticipacao.jsp"%>
-
+			<c:forEach items="${pessoasList}" var="pessoa" varStatus="s">      
+            <input type="checkbox" name="usuario.regras[${s.index}].codRegra" value="${regra.codRegra}"> ${regra.perfil}      
+            </c:forEach> 
 	</div>
 </body>

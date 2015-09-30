@@ -21,6 +21,8 @@ public class Encontro extends Entity {
 	private List<Equipe> equipes;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "encontro")
 	private List<PapelNaEquipe> papeisNaEquipe;
+	private boolean imprimirCirculo;
+	private boolean modelo1Coluna;
 	
 
 	public Encontro(Long idEncontro) {
@@ -98,6 +100,22 @@ public class Encontro extends Entity {
 			}
 		}
 		return circulos;
+	}
+
+	public boolean isImprimirCirculo() {
+		return imprimirCirculo;
+	}
+
+	public void setImprimirCirculo(boolean imprimirCirculo) {
+		this.imprimirCirculo = imprimirCirculo;
+	}
+
+	public boolean isModelo1Coluna() {
+		return modelo1Coluna;
+	}
+
+	public void setModelo1Coluna(boolean modelo1Coluna) {
+		this.modelo1Coluna = modelo1Coluna;
 	}
 	
 

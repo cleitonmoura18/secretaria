@@ -4,10 +4,10 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 @javax.persistence.Entity
-public class PapelNaEquipe extends Entity implements Comparable<PapelNaEquipe>{
+public class PapelNaEquipe extends Entity implements Comparable<PapelNaEquipe> {
 
 	private String nome;
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Encontro encontro;
 	private Integer ordemImpressao;
 
@@ -34,12 +34,21 @@ public class PapelNaEquipe extends Entity implements Comparable<PapelNaEquipe>{
 	public void setOrdemImpressao(Integer ordemImpressao) {
 		this.ordemImpressao = ordemImpressao;
 	}
+
 	@Override
 	public int compareTo(PapelNaEquipe o) {
-		int compareQuantity = ( o).getOrdemImpressao();
-		//ascending order
+		int compareQuantity = (o).getOrdemImpressao();
+		// ascending order
 		return this.ordemImpressao - compareQuantity;
- 
+
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		PapelNaEquipe papelNaEquipe = new PapelNaEquipe();
+		papelNaEquipe.setNome(nome);
+		papelNaEquipe.setOrdemImpressao(ordemImpressao);
+		return papelNaEquipe;
 	}
 
 }

@@ -2,17 +2,11 @@ package br.com.cleiton.controlador;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
-import br.com.cleiton.components.UsuarioSession;
-import br.com.cleiton.modelo.Encontro;
-import br.com.cleiton.modelo.Equipe;
-import br.com.cleiton.modelo.Paroquia;
-import br.com.cleiton.repositorio.EncontroRepository;
-import br.com.cleiton.repositorio.EquipeRepository;
-import br.com.cleiton.repositorio.ParoquiaRepository;
-import br.com.cleiton.word.ArquivoWord;
 import br.com.caelum.vraptor.Delete;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
@@ -21,6 +15,16 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.interceptor.download.Download;
+import br.com.cleiton.components.UsuarioSession;
+import br.com.cleiton.modelo.Encontro;
+import br.com.cleiton.modelo.Equipe;
+import br.com.cleiton.modelo.PapelNaEquipe;
+import br.com.cleiton.modelo.Paroquia;
+import br.com.cleiton.repositorio.EncontroRepository;
+import br.com.cleiton.repositorio.EquipeRepository;
+import br.com.cleiton.repositorio.PapelNaEquipeRepository;
+import br.com.cleiton.repositorio.ParoquiaRepository;
+import br.com.cleiton.word.ArquivoWord;
 
 @Resource
 public class EncontroController {
@@ -29,6 +33,7 @@ public class EncontroController {
 	private final EncontroRepository repository;
 	private final EquipeRepository equipeRepository;
 	private final ParoquiaRepository paroquiaRepository;
+	private final PapelNaEquipeRepository papelNaEquipeRepository;
 	private final UsuarioSession session;
 
 	private final Validator validator;
@@ -36,13 +41,14 @@ public class EncontroController {
 	public EncontroController(Result result, EncontroRepository repository,
 			EquipeRepository equipeRepository,
 			ParoquiaRepository paroquiaRepository, Validator validator,
-			UsuarioSession session) {
+			UsuarioSession session,PapelNaEquipeRepository papelNaEquipeRepository) {
 		this.result = result;
 		this.equipeRepository = equipeRepository;
 		this.repository = repository;
 		this.paroquiaRepository = paroquiaRepository;
 		this.validator = validator;
 		this.session = session;
+		this.papelNaEquipeRepository= papelNaEquipeRepository;
 	}
 
 	@Get("criarQuadrante")
@@ -120,6 +126,40 @@ public class EncontroController {
 	public void destroy(Encontro encontro) {
 		repository.destroy(repository.find(encontro.getId()));
 		result.redirectTo(this).index();
+	}
+	@Post("/encontro/duplicar/{encontro.id}")
+	public void duplicarEncontro(Encontro encontro) throws CloneNotSupportedException {
+		Encontro encontroView = repository.find(encontro.getId());
+		Encontro novoEncontro = new Encontro();
+		novoEncontro.setParoquia(encontroView.getParoquia());
+		List<Equipe> equipesNovas = new ArrayList<Equipe>();
+		for (Equipe equipe : encontroView.getEquipes()) {
+			Equipe clone = (Equipe) equipe.clone();
+			clone.setEncontro(novoEncontro);
+			equipesNovas.add(clone);
+		}
+		List<PapelNaEquipe> papeisNaEquipe= new ArrayList<PapelNaEquipe>();
+		for (PapelNaEquipe papel : encontroView.getPapeisNaEquipe()) {
+			PapelNaEquipe clone = (PapelNaEquipe) papel.clone();
+			clone.setEncontro(novoEncontro);
+			papeisNaEquipe.add(clone);
+		}
+		novoEncontro.setDataFim(new Date());
+		novoEncontro.setDataInicio(new Date());
+		novoEncontro.setTema("Encontro Duplicado Alterar");
+		novoEncontro.setLema("Lema Dupliacado Alterar");
+		novoEncontro.setEquipes(equipesNovas);
+		novoEncontro.setPapeisNaEquipe(papeisNaEquipe);
+		repository.create(novoEncontro);
+		for (Equipe equipe : equipesNovas) {
+			equipeRepository.create(equipe);
+			
+		}
+		for (PapelNaEquipe papelNaEquipe : papeisNaEquipe) {
+			papelNaEquipeRepository.create(papelNaEquipe);
+		}
+		result.redirectTo(this).show(novoEncontro);
+		
 	}
 
 	public static void main(String[] args) {

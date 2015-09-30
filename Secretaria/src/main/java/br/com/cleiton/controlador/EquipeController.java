@@ -1,6 +1,7 @@
 package br.com.cleiton.controlador;
 
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,10 +22,13 @@ import br.com.cleiton.components.UsuarioSession;
 import br.com.cleiton.components.Utils;
 import br.com.cleiton.modelo.Encontro;
 import br.com.cleiton.modelo.Equipe;
+import br.com.cleiton.modelo.ListaParticipacao;
 import br.com.cleiton.modelo.Participacao;
+import br.com.cleiton.modelo.Pessoa;
 import br.com.cleiton.modelo.TipoPessoa;
 import br.com.cleiton.repositorio.EncontroRepository;
 import br.com.cleiton.repositorio.EquipeRepository;
+import br.com.cleiton.repositorio.PessoaRepository;
 
 @Resource
 public class EquipeController {
@@ -32,17 +36,22 @@ public class EquipeController {
 	private final Result result;
 	private final EquipeRepository repository;
 	private final EncontroRepository encontroRepositorio;
+	private final PessoaRepository pessoaRepository;
 	private final UsuarioSession session;
 
 	private final Validator validator;
 
+	
+
 	public EquipeController(Result result, EquipeRepository repository,
-			EncontroRepository encontroRepositorio, UsuarioSession session,
+			EncontroRepository encontroRepositorio,
+			PessoaRepository pessoaRepository, UsuarioSession session,
 			Validator validator) {
 		super();
 		this.result = result;
 		this.repository = repository;
 		this.encontroRepositorio = encontroRepositorio;
+		this.pessoaRepository = pessoaRepository;
 		this.session = session;
 		this.validator = validator;
 	}
@@ -123,7 +132,19 @@ public class EquipeController {
 		result.include("participacaoList", equipeView.getPartipacao());
 		return equipeView;
 	}
+	
+	@Get("/equipes/copia/{equipe.id}")
+	public ListaParticipacao veteranos(Equipe equipe) {
+		Equipe equipeView = repository.find(equipe.getId());
+		ListaParticipacao listaParticipacao = new ListaParticipacao();
+		listaParticipacao.setEquipe(equipeView);
+		List<Pessoa> pessoas = pessoaRepository.getPessoasQueNaoParticipaDoEncontro(equipeView.getEncontro());
+		Collections.sort(pessoas);
+		listaParticipacao.setPessoas(pessoas);
+		return listaParticipacao;
+	}
 
+	
 	@Delete("/equipes/{equipe.id}")
 	public void destroy(Equipe equipe) {
 		repository.destroy(repository.find(equipe.getId()));

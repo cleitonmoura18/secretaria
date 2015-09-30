@@ -44,7 +44,8 @@ public class Equipe extends Entity implements Comparable<Equipe> {
 	public List<Participacao> getPartipacaoPorPapel(PapelNaEquipe papelNaEquipe) {
 		List<Participacao> participacaos = new ArrayList<Participacao>();
 		for (Participacao participacao : this.partipacao) {
-			if (participacao.getPapelNaEquipe().equals(papelNaEquipe))
+			PapelNaEquipe papelNaEquipe2 = participacao.getPapelNaEquipe();
+			if (papelNaEquipe2.equals(papelNaEquipe))
 				participacaos.add(participacao);
 		}
 		return participacaos;
@@ -92,6 +93,15 @@ public class Equipe extends Entity implements Comparable<Equipe> {
 		this.circulo = circulo;
 	}
 
-	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		Equipe equipe = new Equipe();
+		equipe.setCirculo(circulo);
+		equipe.setName(name);
+		equipe.setPrecisaPapelNaEquipe(precisaPapelNaEquipe);
+		equipe.setOrdemImpressao(ordemImpressao);
+		equipe.setPartipacao(new ArrayList<Participacao>());
+		return equipe;
+	}
 	
 }

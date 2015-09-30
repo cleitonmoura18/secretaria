@@ -39,15 +39,19 @@ public class ArquivoWord {
 	private XWPFDocument document;
 	private String fonte = "Times New Roman";
 	private String nomeArquivo;
-	private final String path = "/arquivos/Modelo 2 Colunas.docx";
+	private final String path2 = "/arquivos/Modelo 2 Colunas.docx";
+	private final String path1 = "/arquivos/Modelo 1 Coluna.docx";
 	
 	public Download criarQuadrante(Encontro encontro) throws IOException, URISyntaxException {
+		String path=getArquivo(encontro);
+		
 		carregarArquivo(path);
 		criarEncontro(encontro);
 		nomeArquivo = "Quadrante " + encontro.getTema();
 		return finalizarArquivo();
 	}
 	public Download criarEquipe(Encontro encontro, Equipe equipe) throws IOException, URISyntaxException {
+		String path=getArquivo(encontro);
 		carregarArquivo(path);
 		Collections.sort(encontro.getPapeisNaEquipe());
 		criarEquipe(equipe, encontro.getPapeisNaEquipe());
@@ -77,7 +81,6 @@ public class ArquivoWord {
 		criarNomeEquipe(nomeEquipe);
 		if(equipe.isPrecisaPapelNaEquipe()){
 		// Inserir papel na equipe
-			System.out.println(equipe.getName());
 		for (PapelNaEquipe papelNaEquipe : papelNaEquipes) {
 			List<Participacao> partipacao = equipe
 					.getPartipacaoPorPapel(papelNaEquipe);
@@ -101,9 +104,6 @@ public class ArquivoWord {
 
 	
 	public void criarParticipante(Pessoa pessoa,Equipe equipe) {
-		if(equipe.getId().equals(21l)){
-			pessoa.setTipoPessoa(TipoPessoa.CASAL);
-		}
 		XWPFParagraph paragrafo = document.createParagraph();
 
 		paragrafo.setSpacingAfter(0);
@@ -112,15 +112,15 @@ public class ArquivoWord {
 		} else {
 			formatarNome(paragrafo, Utils.padronizarNomes(pessoa.getNome()));
 		}
+		boolean imprimirCirculo = equipe.getEncontro().isImprimirCirculo();
+		boolean naoTemCirculo = pessoa.getCirculo() != null;
+		boolean equipeNaoECirculo = !equipe.isCirculo();
+		if (imprimirCirculo && naoTemCirculo && equipeNaoECirculo) {
+			formatarPadraoOutrosDadosServo(paragrafo, "Círculo: "
+					+ pessoa.getCirculo().getName());
+
+		}
 		
-		if (pessoa.getCirculo() != null) {
-			formatarPadraoOutrosDadosServo(paragrafo, "Círculo: "+ pessoa.getCirculo().getName());
-		}
-		else{
-			if(pessoa.getTipoPessoa().equals(TipoPessoa.JOVEM) && !equipe.isCirculo()){
-				formatarPadraoOutrosDadosServo(paragrafo, "Círculo: ");
-			}
-		}
 		String endereco="";
 		String bairro ="";
 
@@ -245,5 +245,11 @@ public class ArquivoWord {
 	public void setFonte(String fonte) {
 		this.fonte = fonte;
 	}
-
+	private String getArquivo(Encontro encontro){
+		if(encontro.isModelo1Coluna()){
+			return path1;
+		}else{
+			return path2;
+		}
+	}
 }

@@ -2,6 +2,7 @@ package br.com.cleiton.repositorio;
 
 import java.util.List;
 
+import br.com.cleiton.modelo.Encontro;
 import br.com.cleiton.modelo.Pessoa;
 
 public interface PessoaRepository {
@@ -18,5 +19,6 @@ public interface PessoaRepository {
 	Pessoa find(Long id);
 	
 	List<Pessoa> findAll();
+	List<Pessoa> getPessoasQueNaoParticipaDoEncontro(Encontro encontro);
 
 }

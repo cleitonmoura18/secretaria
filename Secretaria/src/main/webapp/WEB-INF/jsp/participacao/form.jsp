@@ -15,7 +15,18 @@
 	</c:if>
 
 	<div class="form-group">
-		<legend id="titulo">Jovem</legend>
+		 <c:choose>
+				<c:when test="${participacao.pessoa.tipoPessoa.descricao=='Casal'}">
+					<legend id="titulo">Tios</legend>
+				</c:when>
+				<c:when test="${participacao.pessoa.tipoPessoa.descricao=='Padre'}">
+				<legend id="titulo">Padre</legend>
+				</c:when>
+				<c:otherwise>
+					<legend id="titulo">Jovem</legend>
+				</c:otherwise>
+			</c:choose>
+		
 	</div>
 	<input type="hidden" name="participacao.equipe.id" value="${participacao.equipe.id}"/>
 	<c:if test="${empty participacao.id}">
@@ -40,6 +51,7 @@
 			</select>
 		</div>
 	</div>
+	<c:if test="${participacao.equipe.encontro.imprimirCirculo}">
 	<div class="form-group">
 		<label for="nome" class="col-sm-3 control-label">Círculo:</label>
 		<div class="col-sm-9">
@@ -54,6 +66,7 @@
 			</select>
 		</div>
 	</div>
+	</c:if>
 	
 	<div class="form-group">
 		<label for="nome" class="col-sm-3 control-label" id="nomeLabel">Nome:</label>
@@ -71,13 +84,20 @@
 				required="required">
 		</div>
 	</div>
-	<div class="form-group" id="tiaDiv" hidden="">
+	<div class="form-group" id="tiaDiv"
+	<c:if test="${ participacao.pessoa.tipoPessoa.descricao!='Casal'}">
+		 hidden=""
+	</c:if>
+	>
 	        	<label for="nomeConjugue" class="col-sm-3 control-label">Nome da Tia:</label>
 	        	<div class="col-sm-9">
 	        		<input type="text" name="participacao.pessoa.nomeConjugue" id="nomeConjugue" class="form-control" value="${participacao.pessoa.nomeConjugue}" required="required">
 	        	</div>
 	  </div>
-	 <div class="form-group" id="nomeCrachaConjugue" hidden="">
+	 <div class="form-group" id="nomeCrachaConjugue"
+	 <c:if test="${ participacao.pessoa.tipoPessoa.descricao!='Casal'}">
+		 hidden=""
+	</c:if>>
 		<label for="nomeCrachaConjugue" class="col-sm-3 control-label" id="nomeCrachaConjugue">Nome do Crachá Conjugue:</label>
 		<div class="col-sm-9">
 			<input type="text" name="participacao.pessoa.nomeCrachaConjugue" id="nomeCrachaConjugue"

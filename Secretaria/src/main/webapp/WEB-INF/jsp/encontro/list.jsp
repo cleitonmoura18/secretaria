@@ -16,6 +16,7 @@
 		<th>Data fim</th>
 		<th></th>
 		<th></th>
+		<th></th>
 	</tr>
 
 	<c:forEach items="${encontroList}" var="encontro">
@@ -35,6 +36,16 @@
 			</td>
 
 
+			<td>
+				<form
+							action="${pageContext.request.contextPath}/encontro/duplicar/${encontro.id}"
+							method="post">
+							<button type="submit" onclick="return confirm('Deseja duplicar encontro?')"
+								class="btn btn-primary ">
+								<span class="glyphicon glyphicon-cloud-download" ></span>
+							</button>
+						</form>
+			</td>
 			<td>
 				<form
 							action="${pageContext.request.contextPath}/encontros/${encontro.id}"

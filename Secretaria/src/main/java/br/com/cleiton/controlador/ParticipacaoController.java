@@ -9,15 +9,16 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
-import br.com.caelum.vraptor.validator.ValidationMessage;
 import br.com.caelum.vraptor.view.Results;
 import br.com.cleiton.components.EnumMensagem;
 import br.com.cleiton.components.Mensagem;
 import br.com.cleiton.components.UsuarioSession;
 import br.com.cleiton.modelo.Encontro;
 import br.com.cleiton.modelo.Equipe;
+import br.com.cleiton.modelo.ListaParticipacao;
 import br.com.cleiton.modelo.Paroquia;
 import br.com.cleiton.modelo.Participacao;
+import br.com.cleiton.modelo.Pessoa;
 import br.com.cleiton.repositorio.EncontroRepository;
 import br.com.cleiton.repositorio.EquipeRepository;
 import br.com.cleiton.repositorio.PartipacaoRepository;
@@ -58,7 +59,8 @@ public class ParticipacaoController {
 	public void create(Participacao participacao) {
 		Equipe equipe = equipeRepository.find(participacao.getEquipe().getId());
 		validator.validate(participacao);
-		if(participacao.getPessoa().getCirculo().getId() == null){
+		Equipe circulo = participacao.getPessoa().getCirculo();
+		if(equipe.getEncontro().isImprimirCirculo() && circulo.getId() == null){
 			participacao.getPessoa().setCirculo(null);
 		}
 		if(equipe.isPrecisaPapelNaEquipe()){
@@ -98,7 +100,8 @@ public class ParticipacaoController {
 	public void update(Participacao participacao) {
 		Equipe equipe = equipeRepository.find(participacao.getEquipe().getId());
 		validator.validate(participacao);
-		if(participacao.getPessoa().getCirculo().getId() == null){
+		Equipe circulo = participacao.getPessoa().getCirculo();
+		if(equipe.getEncontro().isImprimirCirculo() && circulo.getId() == null){
 			participacao.getPessoa().setCirculo(null);
 		}
 		if(equipe.isPrecisaPapelNaEquipe()){
@@ -134,7 +137,27 @@ public class ParticipacaoController {
 
 	@Delete("/participacaos/{participacao.id}")
 	public void destroy(Participacao participacao) {
-		repository.destroy(repository.find(participacao.getId()));
-		result.redirectTo(this).index();  
+		Participacao find = repository.find(participacao.getId());
+		repository.destroy(find);
+		result.redirectTo(EquipeController.class).show(find.getEquipe());  
+	}
+	
+	@Post("/equipes/participacao/novas")
+	public void salvarParticipacao(ListaParticipacao listaParticipacao) {
+		if(listaParticipacao.getPapelNaEquipe().getId()==null){
+			listaParticipacao.setPapelNaEquipe(null);
+		}
+		if(listaParticipacao.getPessoas()!=null || !listaParticipacao.getPessoas().isEmpty()){
+			
+			for (Pessoa pessoa : listaParticipacao.getPessoas()) {
+				
+				Participacao participacao = new Participacao();
+				participacao.setEquipe(listaParticipacao.getEquipe());
+				participacao.setPapelNaEquipe(listaParticipacao.getPapelNaEquipe());
+				participacao.setPessoa(pessoa);
+				repository.create(participacao);
+			}
+		}
+		result.redirectTo(EquipeController.class).veteranos(listaParticipacao.getEquipe());
 	}
 }
