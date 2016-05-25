@@ -28,6 +28,9 @@ public class Equipe extends Entity implements Comparable<Equipe> {
 	public String getName() {
 		return name;
 	}
+	public String getNameUpercase() {
+		return name.toUpperCase();
+	}
 
 	public Encontro getEncontro() {
 		return encontro;

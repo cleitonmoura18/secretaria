@@ -3,6 +3,7 @@ package br.com.cleiton.word;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -154,9 +155,11 @@ public class ArquivoWord {
 
 	public Download finalizarArquivo() throws FileNotFoundException, IOException {
 		ByteArrayOutputStream bufferedOutputStream = new ByteArrayOutputStream();
+//		FileOutputStream fileOutputStream = new FileOutputStream(new File("C:\\Users\\clebert\\Desktop\\EJC\\Arquivo.docx") );
+//		document.write(fileOutputStream);
 		document.write(bufferedOutputStream);
 		return  new ByteArrayDownload(bufferedOutputStream.toByteArray(),CONTENT_TYPE_DOCX, this.nomeArquivo + ".docx");
-		 
+//		return null; 
 	
 	}
 

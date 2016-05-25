@@ -1,6 +1,5 @@
 package br.com.cleiton.modelo;
 
-import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +33,7 @@ public class Pessoa extends Entity implements Comparable<Pessoa>{
 	@Enumerated(EnumType.STRING)
 	private TipoPessoa tipoPessoa;
 	@CollectionOfElements(fetch = FetchType.LAZY)
+//	@ElementCollection(fetch = FetchType.LAZY)
 	private List<String> telefones;
 
 	@ManyToOne(fetch = FetchType.LAZY)

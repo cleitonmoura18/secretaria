@@ -18,6 +18,9 @@ public class PapelNaEquipe extends Entity implements Comparable<PapelNaEquipe> {
 	public String getNome() {
 		return nome;
 	}
+	public String getNameUpercase() {
+		return nome.toUpperCase();
+	}
 
 	public Encontro getEncontro() {
 		return encontro;

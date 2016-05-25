@@ -1,7 +1,7 @@
 package br.com.cleiton.controlador;
 
+import java.io.File;
 import java.io.IOException;
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,6 +29,7 @@ import br.com.cleiton.modelo.TipoPessoa;
 import br.com.cleiton.repositorio.EncontroRepository;
 import br.com.cleiton.repositorio.EquipeRepository;
 import br.com.cleiton.repositorio.PessoaRepository;
+import br.com.cleiton.word.MontarQuadrante;
 
 @Resource
 public class EquipeController {
@@ -55,7 +56,13 @@ public class EquipeController {
 		this.session = session;
 		this.validator = validator;
 	}
-
+	@Get("migrarQuadrante")
+	public Download criarQuadrantePorXLSX() throws Exception{
+		File file = new File("C:\\Users\\clebert\\Desktop\\EJC\\Participantes EJC.xlsx");
+		MontarQuadrante montarQuadrante = new MontarQuadrante(pessoaRepository);
+		Encontro encontro = encontroRepositorio.find(session.getIdEncontro());
+		return montarQuadrante.criarEncontro(file, encontro);
+	}
 	@Get("/equipes")
 	public Encontro index() {
 

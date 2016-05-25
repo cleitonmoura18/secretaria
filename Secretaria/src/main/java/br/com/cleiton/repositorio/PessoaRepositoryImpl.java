@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.type.StandardBasicTypes;
 
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.cleiton.modelo.Encontro;
