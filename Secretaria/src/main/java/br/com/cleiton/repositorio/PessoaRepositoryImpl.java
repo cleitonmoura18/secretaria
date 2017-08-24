@@ -23,9 +23,9 @@ public class PessoaRepositoryImpl
 
 	public List<Pessoa> getPessoasQueNaoParticipaDoEncontro(Encontro encontro) {
 		StringBuffer varname1 = new StringBuffer();
-		varname1.append("select par.pessoa_id from participacao par inner join ");
-		varname1.append("equipe eq on eq.id=par.equipe_id ");
-		varname1.append("inner join encontro en on en.id=eq.encontro_id ");
+		varname1.append("select par.pessoa_id from Participacao par inner join ");
+		varname1.append("Equipe eq on eq.id=par.equipe_id ");
+		varname1.append("inner join Encontro en on en.id=eq.encontro_id ");
 		varname1.append("where en.id= :idEncontro");
 		List<BigInteger> ids = session.createSQLQuery(varname1.toString()).
 				setParameter("idEncontro", encontro.getId()).list();
@@ -38,6 +38,7 @@ public class PessoaRepositoryImpl
 			createCriteria
 			.add(Restrictions.not(Restrictions.in("id", idsConvetidos)));
 		}
+		createCriteria.add(Restrictions.eq("paroquia", encontro.getParoquia()));
 		return createCriteria.list();
 
 	}

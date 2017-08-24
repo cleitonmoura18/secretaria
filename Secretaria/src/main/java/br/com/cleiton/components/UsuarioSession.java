@@ -9,6 +9,7 @@ import br.com.cleiton.modelo.sistema.Usuario;
 public class UsuarioSession {
 	private Long idParoquia;
 	private Long idEncontro;
+	private String nomeEncontro;
 	private Usuario user;
 
 	public Long getIdParoquia() {
@@ -41,5 +42,13 @@ public class UsuarioSession {
 
 	public void setUser(Usuario user) {
 		this.user = user;
+	}
+
+	public String getNomeEncontro() {
+		return nomeEncontro;
+	}
+
+	public void setNomeEncontro(String nomeEncontro) {
+		this.nomeEncontro = nomeEncontro;
 	}
 }

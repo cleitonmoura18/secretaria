@@ -115,8 +115,9 @@ public class EncontroController {
 
 	@Get("/encontros/{encontro.id}")
 	public Encontro show(Encontro encontro) {
-		session.setIdEncontro(encontro.getId());
 		Encontro encontroView = repository.find(encontro.getId());
+		session.setIdEncontro(encontro.getId());
+		session.setNomeEncontro(encontroView.getTema());
 		Collections.sort(encontroView.getPapeisNaEquipe());
 		Collections.sort(encontroView.getEquipes());
 		return encontroView;
