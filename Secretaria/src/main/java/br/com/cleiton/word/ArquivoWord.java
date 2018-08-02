@@ -3,10 +3,10 @@ package br.com.cleiton.word;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +48,7 @@ public class ArquivoWord {
 		
 		carregarArquivo(path);
 		criarEncontro(encontro);
-		nomeArquivo = "Quadrante " + encontro.getTema();
+		nomeArquivo = "Quadrante " + normalizar( encontro.getTema());
 		return finalizarArquivo();
 	}
 	public Download criarEquipe(Encontro encontro, Equipe equipe) throws IOException, URISyntaxException {
@@ -56,7 +56,7 @@ public class ArquivoWord {
 		carregarArquivo(path);
 		Collections.sort(encontro.getPapeisNaEquipe());
 		criarEquipe(equipe, encontro.getPapeisNaEquipe());
-		nomeArquivo = "Quadrante " + encontro.getTema()+ " "+ equipe.getName();
+		nomeArquivo = "Quadrante " + normalizar( encontro.getTema())+ " "+ normalizar(equipe.getName());
 		return finalizarArquivo();
 	}
 
@@ -249,10 +249,16 @@ public class ArquivoWord {
 		this.fonte = fonte;
 	}
 	private String getArquivo(Encontro encontro){
+		if(encontro.getCaminhoArquivo() != null) {
+			return encontro.getCaminhoArquivo();
+		}
 		if(encontro.isModelo1Coluna()){
 			return path1;
 		}else{
 			return path2;
 		}
+	}
+	public static String normalizar(String s) {
+		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 	}
 }

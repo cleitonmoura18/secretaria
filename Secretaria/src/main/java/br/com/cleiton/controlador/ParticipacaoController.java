@@ -9,6 +9,7 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.ValidationMessage;
 import br.com.caelum.vraptor.view.Results;
 import br.com.cleiton.components.EnumMensagem;
 import br.com.cleiton.components.Mensagem;
@@ -144,7 +145,17 @@ public class ParticipacaoController {
 	
 	@Post("/equipes/participacao/novas")
 	public void salvarParticipacao(ListaParticipacao listaParticipacao) {
-		if(listaParticipacao.getPapelNaEquipe().getId()==null){
+		
+		
+		boolean semPapelInformado = listaParticipacao.getPapelNaEquipe().getId() == null;
+		boolean precisaPapelNaEquipe = listaParticipacao.getEquipe().isPrecisaPapelNaEquipe();
+		if (precisaPapelNaEquipe && semPapelInformado) {
+			validator.add(new ValidationMessage("Selecione o papel na equipe", ""));
+		}
+	
+	    validator.onErrorUsePageOf(EquipeController.class).veteranos(listaParticipacao.getEquipe());
+
+		if (!precisaPapelNaEquipe && semPapelInformado) {
 			listaParticipacao.setPapelNaEquipe(null);
 		}
 		if(listaParticipacao.getPessoas()!=null || !listaParticipacao.getPessoas().isEmpty()){

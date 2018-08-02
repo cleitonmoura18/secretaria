@@ -151,6 +151,7 @@ public class EncontroController {
 		novoEncontro.setLema("Lema Dupliacado Alterar");
 		novoEncontro.setEquipes(equipesNovas);
 		novoEncontro.setPapeisNaEquipe(papeisNaEquipe);
+		novoEncontro.setCaminhoArquivo(encontroView.getCaminhoArquivo());
 		repository.create(novoEncontro);
 		for (Equipe equipe : equipesNovas) {
 			equipeRepository.create(equipe);
@@ -163,7 +164,4 @@ public class EncontroController {
 		
 	}
 
-	public static void main(String[] args) {
-
-	}
 }

@@ -23,6 +23,7 @@ public class Encontro extends Entity {
 	private List<PapelNaEquipe> papeisNaEquipe;
 	private boolean imprimirCirculo;
 	private boolean modelo1Coluna;
+	private String caminhoArquivo;
 	
 
 	public Encontro(Long idEncontro) {
@@ -116,6 +117,14 @@ public class Encontro extends Entity {
 
 	public void setModelo1Coluna(boolean modelo1Coluna) {
 		this.modelo1Coluna = modelo1Coluna;
+	}
+
+	public String getCaminhoArquivo() {
+		return caminhoArquivo;
+	}
+
+	public void setCaminhoArquivo(String caminhoArquivo) {
+		this.caminhoArquivo = caminhoArquivo;
 	}
 	
 

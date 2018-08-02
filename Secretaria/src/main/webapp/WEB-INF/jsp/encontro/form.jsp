@@ -40,6 +40,13 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="inputEmail1" class="col-lg-2 control-label">Tema</label>
+				<div class="col-lg-10">
+					<input type="text" class="form-control" name="encontro.caminhoArquivo" 
+						value="${encontro.caminhoArquivo}" id="caminhoArquivo" placeholder="Caminho do Arquivo">
+				</div>
+			</div>
+			<div class="form-group">
 				<label for="imprimirCirculo" class="col-lg-2 control-label">Precisa de Papel?</label>
 					
 					Sim <input type="radio" class="form-control-inline" name="encontro.imprimirCirculo"
